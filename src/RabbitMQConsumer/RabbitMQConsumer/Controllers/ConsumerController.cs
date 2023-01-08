@@ -15,7 +15,6 @@ namespace RabbitMQConsumer.Controllers
         public async Task<IActionResult> GetMessage()
         {
             var response = new List<Mensagem>();
-            var msg = new Mensagem();
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
@@ -35,7 +34,7 @@ namespace RabbitMQConsumer.Controllers
                     {
                         var body = ea.Body.ToArray();
                         var message = Encoding.UTF8.GetString(body);
-                        msg = JsonSerializer.Deserialize<Mensagem>(message);
+                        var msg = JsonSerializer.Deserialize<Mensagem>(message);
 
                         channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
 
